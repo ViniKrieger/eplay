@@ -1,65 +1,44 @@
+import { useState } from 'react'
+
+import { GalleryItem } from '../../pages/Home'
 import Section from '../Section'
 
 import { Items, Item, Action, Modal, ModalContent } from './styles'
 
-import zelda from '../../assets/images/images_M35/images/zelda.png'
 import play from '../../assets/images/images_M35/images/play.png'
 import zoom from '../../assets/images/images_M35/images/zoom.png'
-import spiderman from '../../assets/images/images_M35/images/banner-homem-aranha.png'
-import hogwarts from '../../assets/images/images_M35/images/fundo_hogwarts.png'
 import fechar from '../../assets/images/images_M35/images/fechar.png'
-import { useState } from 'react'
-import { url } from 'inspector'
-
-interface GalleryItem {
-  type: 'imagem' | 'video'
-  url: string
-}
-
-const mok: GalleryItem[] = [
-  {
-    type: 'imagem',
-    url: spiderman
-  },
-  {
-    type: 'imagem',
-    url: hogwarts
-  },
-  {
-    type: 'video',
-    url: 'https://www.youtube.com/embed/uHGShqcAHlQ?si=GirLirXJoKwDhZF5'
-  }
-]
 
 type Props = {
   defaultCover: string
   name: string
+  items: GalleryItem[]
 }
 
 interface ModalState extends GalleryItem {
   isVisible: boolean
 }
 
-const Gallery = ({ defaultCover, name }: Props) => {
+const Gallery = ({ defaultCover, name, items }: Props) => {
   const [modal, setMOdal] = useState<ModalState>({
     isVisible: false,
-    type: 'imagem',
+    type: 'image',
     url: ''
   })
 
   const getMediaCover = (item: GalleryItem) => {
-    if (item.type === 'imagem') return item.url
+    if (item.type === 'image') return item.url
     return defaultCover
   }
   const getMediaIcon = (item: GalleryItem) => {
-    if (item.type === 'imagem') return zoom
+    if (item.type === 'image') return zoom
     return play
   }
 
   const closeModal = () => {
     setMOdal({
       isVisible: false,
-      type: 'imagem',
+      type: 'image',
       url: ''
     })
   }
@@ -68,7 +47,7 @@ const Gallery = ({ defaultCover, name }: Props) => {
     <>
       <Section title="Galeria" background="black">
         <Items>
-          {mok.map((media, index) => (
+          {items.map((media, index) => (
             <Item
               key={media.url}
               onClick={() => {
@@ -105,7 +84,7 @@ const Gallery = ({ defaultCover, name }: Props) => {
               }}
             />
           </header>
-          {modal.type === 'imagem' ? (
+          {modal.type === 'image' ? (
             <img src={modal.url} />
           ) : (
             <iframe frameBorder={0} src={modal.url} />
